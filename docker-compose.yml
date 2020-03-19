@@ -1,0 +1,29 @@
+version: '3.3'
+
+volumes:
+  rversions-data:
+
+services:
+
+  rversions:
+    image: "rhub/api-rversions:latest"
+    environment:
+    - REDIS_HOST=rversions-redis
+    - PORT=3000
+    depends_on:
+    - rversions-redis
+
+  rversions-redis:
+    image: "redis:4.0.11-alpine"
+    volumes:
+    - rversions-data:/data
+
+  nginx:
+    build: ./nginx
+    image: "rhub/api-nginx:latest"
+    ports:
+    - "8080:80"
+    entrypoint:
+    - sh
+    - -c
+    - /entrypoint.sh
