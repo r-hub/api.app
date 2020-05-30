@@ -2,28 +2,72 @@ version: '3.3'
 
 volumes:
   rversions-data:
+  certbot-etc:
+  certbot-var:
+  web-root:
+  nginx-config:
 
 services:
 
   rversions:
-    image: "rhub/api-rversions:latest"
+    image: "rhub/api-rversions:0.0.1"
     environment:
-    - REDIS_HOST=rversions-redis
-    - PORT=3000
+      - REDIS_HOST=rversions-redis
+      - PORT=3000
     depends_on:
-    - rversions-redis
+      - rversions-redis
+    restart: unless-stopped
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   rversions-redis:
     image: "redis:4.0.11-alpine"
     volumes:
-    - rversions-data:/data
+      - rversions-data:/data
+    restart: unless-stopped
+    deploy:
+      restart_policy:
+        condition: on-failure
 
   nginx:
-    build: ./nginx
-    image: "rhub/api-nginx:latest"
+    image: "nginx:mainline-alpine"
     ports:
-    - "8080:80"
-    entrypoint:
-    - sh
-    - -c
-    - /entrypoint.sh
+      - "80:80"
+      - "443:443"
+    volumes:
+      - web-root:/var/www/html
+      - nginx-config:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - init
+      - rversions
+    restart: unless-stopped
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  certbot:
+    image: "certbot/certbot"
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - nginx
+#   command: certonly --webroot --webroot-path=/var/www/html --email csardi.gabor@gmail.com --agree-tos --no-eff-email -d api.r-hub.io
+    command: renew
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 24h
+
+  init:
+    build: "./init"
+    image: "rhub/api-init:latest"
+    volumes:
+      - nginx-config:/nginx-config
+    deploy:
+      restart_policy:
+        condition: none
