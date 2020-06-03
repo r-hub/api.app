@@ -7,13 +7,19 @@ volumes:
   web-root:
   nginx-config:
 
+secrets:
+  app-insights-key:
+    external: true
+
 services:
 
   rversions:
-    image: "rhub/api-rversions:0.0.1"
+    image: "rhub/api-rversions:0.0.2"
     environment:
       - REDIS_HOST=rversions-redis
       - PORT=3000
+    secrets:
+      - app-insights-key
     depends_on:
       - rversions-redis
     restart: unless-stopped
