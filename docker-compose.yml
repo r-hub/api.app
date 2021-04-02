@@ -53,6 +53,7 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload && echo NGINX config reload for Certbot - OK; done & nginx -g \"daemon off;\"'"
 
   certbot:
     image: "certbot/certbot"
