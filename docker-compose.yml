@@ -5,7 +5,6 @@ volumes:
   certbot-etc:
   certbot-var:
   web-root:
-  nginx-config:
 
 secrets:
   app-insights-key:
@@ -18,8 +17,8 @@ services:
     environment:
       - REDIS_HOST=rversions-redis
       - PORT=3000
-    secrets:
-      - app-insights-key
+#    secrets:
+#      - app-insights-key
     depends_on:
       - rversions-redis
     restart: unless-stopped
@@ -37,23 +36,25 @@ services:
         condition: on-failure
 
   nginx:
-    image: "nginx:mainline-alpine"
+    build: "./nginx"
+    image: "rhub/api-nginx:0.0.1"
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - web-root:/var/www/html
-      - nginx-config:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html:ro
+      - certbot-etc:/etc/letsencrypt:ro
+      - certbot-var:/var/lib/letsencrypt:ro
     depends_on:
-      - init
       - rversions
     restart: unless-stopped
     deploy:
       restart_policy:
         condition: on-failure
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload && echo NGINX config reload for Certbot - OK; done & nginx -g \"daemon off;\"'"
+    entrypoint:
+      - sh
+      - -c
+      - /entrypoint.sh
 
   certbot:
     image: "certbot/certbot"
@@ -69,12 +70,3 @@ services:
       restart_policy:
         condition: any
         delay: 24h
-
-  init:
-    build: "./init"
-    image: "rhub/api-init:latest"
-    volumes:
-      - nginx-config:/nginx-config
-    deploy:
-      restart_policy:
-        condition: none
