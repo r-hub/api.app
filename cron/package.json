@@ -1,0 +1,18 @@
+{
+  "name": "rhub-search-cron",
+  "version": "1.0.0",
+  "description": "Regular jobs to keep R-hub search steady",
+  "scripts": {
+    "start": "node ./bin/scheduler",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "r-hub"
+  ],
+  "author": "Gabor Csardi",
+  "license": "ISC",
+  "dependencies": {
+    "cron": "^1.5.0",
+    "got": "^9.3.1"
+  }
+}

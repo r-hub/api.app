@@ -168,3 +168,10 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+
+  search-cron:
+    build: ./cron
+    image: "rhub/search-cron:0.0.4"
+    deploy:
+      restart_policy:
+        condition: any
