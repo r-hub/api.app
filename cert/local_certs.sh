@@ -16,6 +16,10 @@ if ! ls "api.r-hub.io+3-key.pem" "api.r-hub.io+3.pem" >/dev/null 2>&1; then
     mkcert api.r-hub.io localhost 127.0.0.1 ::1
 fi
 
+if ! ls "search.r-pkg.org+3-key.pem" "search.r-pkg.org+3.pem" >/dev/null 2>&1; then
+    mkcert search.r-pkg.org localhost 127.0.0.1 ::1
+fi
+
 docker volume create api_certbot-etc || true
 
 docker build -t rhub-nopush/api-local-certs:0.0.1 .
@@ -25,5 +29,6 @@ docker run -v api_certbot-etc:/etc/letsencrypt rhub-nopush/api-local-certs:0.0.1
 
 # To test add this to /etc/hosts:
 # 127.0.0.1 api.r-hub.io
+# 127.0.0.1 search.r-pkg.org
 # and then you can run
 # curl https://api.r-hub.io/rversions/r-release
