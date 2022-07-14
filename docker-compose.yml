@@ -6,6 +6,8 @@ volumes:
   certbot-etc:
   certbot-var:
   web-root:
+  logstash-data:
+  package-data:
 
 secrets:
   app-insights-key:
@@ -51,7 +53,7 @@ services:
 
   nginx:
     build: "./nginx"
-    image: "rhub/api-nginx:0.0.1"
+    image: "rhub/api-nginx:0.0.2"
     ports:
       - "80:80"
       - "443:443"
@@ -95,3 +97,74 @@ services:
       restart_policy:
         condition: any
         delay: 24h
+
+  elasticsearch:
+    build: ./elasticsearch
+    image: "rhub/search-elasticsearch:0.0.4"
+    environment:
+    - cluster.name=search-cluster
+    - bootstrap.memory_lock=false
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - package-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: curl -s http://127.0.0.1:9200 >/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 50
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+  elastic-seed:
+    build: ./seed
+    image: "rhub/search-seed:0.0.4"
+    entrypoint:
+    - bash
+    - -c
+    - /seed/elastic.sh
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  logstash:
+    build: ./logstash
+    image: "rhub/search-logstash:0.0.4"
+    volumes:
+    - logstash-data:/usr/share/logstash/data
+    deploy:
+      restart_policy:
+        delay: 5s
+        window: 30s
+    healthcheck:
+      test: curl -s http://127.0.0.1:9600 >/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 50
+    deploy:
+      update_config:
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 120s
