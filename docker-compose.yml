@@ -18,8 +18,8 @@ services:
     environment:
       - REDIS_HOST=rversions-redis
       - PORT=3000
-#    secrets:
-#      - app-insights-key
+    secrets:
+      - app-insights-key
     depends_on:
       - rversions-redis
     healthcheck:
