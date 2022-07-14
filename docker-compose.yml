@@ -25,6 +25,11 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+    healthcheck:
+      test: curl -s http://127.0.0.1:3000/r-release >/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 50
 
   rversions-redis:
     image: "redis:4.0.11-alpine"
