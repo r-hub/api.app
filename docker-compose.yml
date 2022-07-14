@@ -61,10 +61,7 @@ services:
       - certbot-var:/var/lib/letsencrypt:ro
     depends_on:
       - rversions
-    entrypoint:
-      - sh
-      - -c
-      - /entrypoint.sh
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload && echo NGINX config reload for Certbot - OK; done & nginx -g \"daemon off;\"'"
     healthcheck:
       test: curl -s http://127.0.0.1/rversions/r-release >/dev/null || exit 1
       interval: 30s
