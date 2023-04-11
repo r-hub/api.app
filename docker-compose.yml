@@ -17,7 +17,7 @@ services:
 
   rversions:
     platform: linux/amd64
-    image: "rhub/api-rversions:0.0.7"
+    image: "rhub/api-rversions:0.0.9"
     environment:
       - REDIS_HOST=rversions-redis
       - PORT=3000
