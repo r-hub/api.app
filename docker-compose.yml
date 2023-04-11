@@ -16,6 +16,7 @@ secrets:
 services:
 
   rversions:
+    platform: linux/amd64
     image: "rhub/api-rversions:0.0.7"
     environment:
       - REDIS_HOST=rversions-redis
@@ -44,6 +45,7 @@ services:
         window: 120s
 
   rversions-redis:
+    platform: linux/amd64
     image: "redis:4.0.11-alpine"
     volumes:
       - rversions-data:/data
@@ -52,6 +54,7 @@ services:
         condition: on-failure
 
   nginx:
+    platform: linux/amd64
     build: "./nginx"
     image: "rhub/api-nginx:0.0.2"
     ports:
@@ -84,6 +87,7 @@ services:
         window: 120s
 
   certbot:
+    platform: linux/amd64
     image: "certbot/certbot"
     volumes:
       - certbot-etc:/etc/letsencrypt
@@ -99,6 +103,7 @@ services:
         delay: 24h
 
   elasticsearch:
+    platform: linux/amd64
     build: ./elasticsearch
     image: "rhub/search-elasticsearch:0.0.4"
     environment:
@@ -131,6 +136,7 @@ services:
         window: 120s
 
   elastic-seed:
+    platform: linux/amd64
     build: ./seed
     image: "rhub/search-seed:0.0.4"
     entrypoint:
@@ -142,6 +148,7 @@ services:
         condition: on-failure
 
   logstash:
+    platform: linux/amd64
     build: ./logstash
     image: "rhub/search-logstash:0.0.4"
     volumes:
@@ -170,6 +177,7 @@ services:
         window: 120s
 
   search-cron:
+    platform: linux/amd64
     build: ./cron
     image: "rhub/search-cron:0.0.4"
     deploy:
