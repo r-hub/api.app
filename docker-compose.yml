@@ -20,6 +20,7 @@ services:
     environment:
       - REDIS_HOST=rversions-redis
       - PORT=3000
+      - R_VERSIONS_CACHE_LIMIT=3600000
     secrets:
       - app-insights-key
     depends_on:
