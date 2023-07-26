@@ -4,7 +4,7 @@ var got = require('got');
 var CRON_JOB_UPDATE = '48 45 23 * * *';
 
 var CRANDB_REVDEPS =
-    'https://crandb.r-pkg.org:6984/cran/_design/internal/_view/' +
+    'https://crandb.r-pkg.org:2053/cran/_design/internal/_view/' +
     'numrevdeps?group=true';
 var CRANLOGS = "https://cranlogs.r-pkg.org/downloads/monthly-totals";
 var ES_URL = 'http://elasticsearch:9200/';
