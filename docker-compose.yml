@@ -147,10 +147,6 @@ services:
     image: "rhub/search-logstash:0.0.4"
     volumes:
     - logstash-data:/usr/share/logstash/data
-    deploy:
-      restart_policy:
-        delay: 5s
-        window: 30s
     healthcheck:
       test: curl -s http://127.0.0.1:9600 >/dev/null || exit 1
       interval: 30s
