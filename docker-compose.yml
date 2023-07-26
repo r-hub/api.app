@@ -167,7 +167,6 @@ services:
         window: 120s
 
   search-cron:
-    platform: linux/amd64
     build: ./cron
     image: "rhub/search-cron:0.0.5"
     deploy:
