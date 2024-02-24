@@ -16,7 +16,7 @@ secrets:
 services:
 
   rversions:
-    image: "rhub/api-rversions:0.0.29"
+    image: "rhub/api-rversions:0.0.30"
     environment:
       - REDIS_HOST=rversions-redis
       - PORT=3000
