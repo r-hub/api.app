@@ -1,23 +1,15 @@
 The R-hub API
 ================
 
--   <a href="#the-apis" id="toc-the-apis">The APIs</a>
--   <a href="#maintainer-notes" id="toc-maintainer-notes">Maintainer
-    notes</a>
-    -   <a href="#https-certificates" id="toc-https-certificates">HTTPS
-        certificates</a>
-    -   <a href="#local-testing" id="toc-local-testing">Local testing</a>
-    -   <a href="#running-the-service" id="toc-running-the-service">Running the
-        service</a>
-    -   <a href="#rversions-notes"
-        id="toc-rversions-notes"><code>rversions</code> notes</a>
-    -   <a href="#pkgsearch-notes"
-        id="toc-pkgsearch-notes"><code>pkgsearch</code> notes</a>
-    -   <a href="#nginx-notes" id="toc-nginx-notes">nginx notes</a>
-    -   <a href="#health-checks-and-zero-downtime-deployment"
-        id="toc-health-checks-and-zero-downtime-deployment">Health checks and
-        zero downtime deployment</a>
--   <a href="#license" id="toc-license">License</a>
+> ## ARCHIVED
+>
+> We don’t use this app any more, and this repo is now archived. We use
+> the [r-hub/search](https://github.com/r-hub/search) app for the CRAN
+> package search, and the
+> [r-hub/rversions.app](https://github.com/r-hub/rversions.app) app for
+> the R-versions API.
+
+<hr/>
 
 This is the app serving the APIs at <https://api.r-hub.io>
 

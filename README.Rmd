@@ -1,14 +1,22 @@
 ---
 output:
   github_document:
-    toc: true
-    toc_depth: 3
 always_allow_html: yes
 editor_options:
   markdown:
     wrap: sentence
 title: The R-hub API
 ---
+
+> ## ARCHIVED
+>
+> We don't use this app any more, and this repo is now archived.
+> We use the [r-hub/search](https://github.com/r-hub/search) app for
+> the CRAN package search, and the
+> [r-hub/rversions.app](https://github.com/r-hub/rversions.app) app
+> for the R-versions API.
+
+<hr/>
 
 This is the app serving the APIs at https://api.r-hub.io
 
